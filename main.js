@@ -7,8 +7,8 @@ let s2;
 
 function setup() {
   r1 = new Ray(100,100,30,400,true);
-  s1 = createSlider(0,3,n1,0.05);
-  s2 = createSlider(0,3,n2,0.05);
+  s1 = createSlider(0,3,n1,0.01);
+  s2 = createSlider(0,3,n2,0.01);
   createCanvas(600,600);
 }
 
