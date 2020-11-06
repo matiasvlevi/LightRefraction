@@ -106,6 +106,8 @@ function drawMesures() {
     let yl = (sin(i*10+offset)+cos(i*10+offset))*150+300;
     textSize(10);
     textAlign(CENTER)
+    noStroke()
+    fill(255,170)
         text(formatDeg(i*10),xl,yl);
     translate(x,y);
 
