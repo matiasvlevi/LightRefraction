@@ -14,11 +14,12 @@ function setup() {
 
 function draw() {
   background(51);
-  drawMesures();
+
   n1 = s1.value();
   n2 = s2.value();
-  r1.render();
+  r1.render(255);
   line(0,300,600,300)
+  drawMesures();
 }
 
 class Ray {
@@ -27,10 +28,13 @@ class Ray {
     this.angle = a;
     this.length = length;
     this.refractedRay = undefined;
+    this.rIntensity = 0;
+    this.mIntensity = 0;
+    this.mirroredRay = undefined;
     this.incident = incident;
     this.previous = [];
   }
-  render() {
+  render(intensity) {
     angleMode(DEGREES);
 
     if (this.previous.length > 0) {
@@ -47,26 +51,39 @@ class Ray {
 
 
     if (y2 > 300 && this.incident == true) {
+    fill(255);
+    ellipse(x1,y1,6,6)
       let p = lineIntersection(x1,y1,x2,y2,0,300,600,300);
       x2 = p[0];
       y2 = p[1];
-
+      this.mirroredRay = new Ray(0,0,0,0,false);
+      this.mirroredRay.pos.x = x2;
+      this.mirroredRay.pos.y = y2;
+      this.mirroredRay.length = 600;
+      this.mirroredRay.angle = -1*((90+this.angle)-180)+90;
       let refAngle = findThetaR(n1,n2,this.angle);
       this.refractedRay = new Ray(0,0,0,0,false);
       this.refractedRay.pos.x = x2;
       this.refractedRay.pos.y = y2;
       this.refractedRay.length = 600;
       this.refractedRay.angle = refAngle;
+
+      this.rIntensity = calcIntensity_r(this.angle);
+      this.mIntensity = calcIntensity(this.angle);
+
+      console.log(this.rIntensity);
     } else {
       this.refractedRay = undefined;
     }
     if (this.refractedRay !== undefined && this.pos.y < 300) {
-      this.refractedRay.render()
+      this.refractedRay.render(this.rIntensity);
+      this.mirroredRay.render(this.mIntensity);
+      //console.log(-1*(180 - (90 + this.angle)))
     }
 
 
     this.previous = [x1,y1,x2,y2];
-    stroke(255);
+    stroke(intensity);
     line(x1,y1,x2,y2);
   }
 }
@@ -132,7 +149,12 @@ function formatDeg(x) {
      return map(x,180,90,0,90);
   }
 }
-
+function calcIntensity(x) {
+    return 2.26666*abs(x)+51;
+}
+function calcIntensity_r(x) {
+    return -2.26666*abs(x)+255;
+}
 function mouseDragged(){
   if (mouseX > 0 && mouseX < 600 && mouseY < 600 && mouseY > 0) {
     r1.pos.x = mouseX;
