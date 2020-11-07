@@ -4,12 +4,13 @@ let n1 = 1.00;
 let n2 = 1.45;
 let s1;
 let s2;
-
+let data = [];
 function setup() {
   r1 = new Ray(100,100,30,400,true);
-  s1 = createSlider(0,3,n1,0.01);
-  s2 = createSlider(0,3,n2,0.01);
+  s1 = createSlider(0,3,n1,0.005);
+  s2 = createSlider(0,3,n2,0.005);
   createCanvas(600,600);
+  data = printData(5);
 }
 
 function draw() {
@@ -72,8 +73,6 @@ class Ray {
 
       this.rIntensity = calcIntensity_r(this.angle);
       this.mIntensity = calcIntensity(this.angle);
-
-      console.log(this.rIntensity);
     } else {
       this.refractedRay = undefined;
     }
@@ -165,4 +164,33 @@ function mouseDragged(){
     r1.pos.y = mouseY;
   }
 
+}
+function printData(increment) {
+    let arr = [];
+    for (let i =-90; i < 91; i+=increment) {
+        //console.log("Incident: "+i+" Refracted: "+findThetaR(n1,n2,i))\
+        let r = round(findThetaR(n1,n2,i)*1000)/1000;
+        console.log("("+i+","+r+")")
+        arr.push([i,r]);
+    }
+    return arr;
+}
+
+
+
+function download_csv() {
+    let inter = JSON.parse(prompt("Increment"));
+    data = printData(inter);
+    let csv = 'Name,Title\n';
+    data.forEach(function(row) {
+            csv += row.join(',');
+            csv += "\n";
+    });
+
+    console.log(csv);
+    let hiddenElement = document.createElement('a');
+    hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
+    hiddenElement.target = '_blank';
+    hiddenElement.download = 'people.csv';
+    hiddenElement.click();
 }
