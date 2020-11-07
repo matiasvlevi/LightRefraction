@@ -17,7 +17,9 @@ function draw() {
 
   n1 = s1.value();
   n2 = s2.value();
-  r1.render(255);
+  if (mouseY < 300) {
+      r1.render(255);
+  }
   line(0,300,600,300)
   drawMesures();
 }
@@ -114,21 +116,23 @@ function drawMesures() {
   stroke(255,100);
   ellipse(300,300,400,400);
 
-  for (let i = 0;i < 36; i++) {
+  for (let i = 0;i <36; i++) {
     push();
     let offset = 135+90;
-    let x = (cos(i*10+offset)-sin(i*10+offset))*140+300;
-    let y = (sin(i*10+offset)+cos(i*10+offset))*140+300;
-    let xl = (cos(i*10+offset)-sin(i*10+offset))*150+300;
-    let yl = (sin(i*10+offset)+cos(i*10+offset))*150+300;
+    let n = 10;
+    let x = (cos(i*n+offset)-sin(i*n+offset))*140+300;
+    let y = (sin(i*n+offset)+cos(i*n+offset))*140+300;
+    let xl = (cos(i*n+offset)-sin(i*n+offset))*150+300;
+    let yl = (sin(i*n+offset)+cos(i*n+offset))*150+300;
+
     textSize(10);
     textAlign(CENTER)
     noStroke()
     fill(255,170)
-        text(formatDeg(i*10),xl,yl);
+    text(formatDeg(i*n),xl,yl);
     translate(x,y);
 
-    rotate(i*10);
+    rotate(i*n);
     stroke(255,20);
     line(0,0,0,150)
 
