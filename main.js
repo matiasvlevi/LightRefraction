@@ -181,7 +181,7 @@ function printData(increment) {
 function download_csv() {
     let inter = JSON.parse(prompt("Increment"));
     data = printData(inter);
-    let csv = 'Name,Title\n';
+    let csv = 'thetaI,thetaR\n';
     data.forEach(function(row) {
             csv += row.join(',');
             csv += "\n";
