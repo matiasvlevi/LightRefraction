@@ -191,6 +191,6 @@ function download_csv() {
     let hiddenElement = document.createElement('a');
     hiddenElement.href = 'data:text/csv;charset=utf-8,' + encodeURI(csv);
     hiddenElement.target = '_blank';
-    hiddenElement.download = 'people.csv';
+    hiddenElement.download = 'refractionData.csv';
     hiddenElement.click();
 }
