@@ -1,6 +1,9 @@
 body {
   background-color: #232323;
-  margin: 0px;
+  position: relative;
+  overflow-x: hidden;
+  height: 100%;
+  
 }
 
 #in1 {
