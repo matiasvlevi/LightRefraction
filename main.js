@@ -6,7 +6,16 @@ let showAngle = false;
 let data = [];
 let wnx = 900;
 let wny = 800;
+let scale_ =1;
 let circleSize = 600;
+let centerpoint = [wnx/2,wny/2]
+
+if ((navigator.userAgent).indexOf("Mobile") !== -1) {
+
+    wnx = 700;
+    wny = 600
+    scale_=1.25;
+}
 function setup() {
   r1 = new Ray(100,100,30,800,"Incident");
 
@@ -15,6 +24,8 @@ function setup() {
 }
 
 function draw() {
+
+    scale(1/scale_)
   background(51);
   dottedVLine(100,700)
   n1 = document.getElementsByName("n1")[0].value;
@@ -24,7 +35,7 @@ function draw() {
   //line(wnx/2,0,wnx/2,wny);
 
 
-  line(0,wny/2,wnx,wny/2)
+  line(0,centerpoint[1],centerpoint[0]*2,centerpoint[1])
   drawIndicerelatif();
   drawMesures();
 }
@@ -45,8 +56,8 @@ class Ray {
     angleMode(DEGREES);
 
     if (this.previous.length > 0) {
-      let b = this.pos.x-(wnx/2);
-      let a = this.pos.y-(wny/2);
+      let b = this.pos.x-centerpoint[0];
+      let a = this.pos.y-centerpoint[1]
       let c = findLength(a,b)
       this.angle = asin(b/c);
     }
@@ -56,9 +67,9 @@ class Ray {
     let x2 = (this.length*cos(this.angle+90))+x1;
     let y2 = (this.length*sin(this.angle+90))+y1;
 
-    if (y2 > wny/2 && this.type == "Incident") {
+    if (y2 > centerpoint[1] && this.type == "Incident") {
 
-        let p = lineIntersection(x1,y1,x2,y2,0,wny/2,wnx,wny/2);
+        let p = lineIntersection(x1,y1,x2,y2,0,centerpoint[1],centerpoint[0]*2,centerpoint[1]);
         x2 = p[0];
         y2 = p[1];
         this.mirroredRay = new Ray(0,0,0,0,"Mirrored");
@@ -74,7 +85,7 @@ class Ray {
         this.refractedRay.length = 600;
         this.refractedRay.angle = refAngle;
         this.refractedRay.parent = this;
-        if (this.pos.y < wny/2) {
+        if (this.pos.y < centerpoint[1]) {
             fill(255);
             ellipse(x1,y1,6,6)
         }
@@ -82,7 +93,7 @@ class Ray {
     } else {
         this.refractedRay = undefined;
     }
-    if (this.pos.y < wny/2) {
+    if (this.pos.y < centerpoint[1]) {
 
         if (this.refractedRay !== undefined ) {
             this.refractedRay.render();
@@ -102,7 +113,7 @@ class Ray {
         parentPosy = this.parent.pos.y;
 
     }
-    if (this.type == "Incident" && this.pos.y > (wny/2)) {
+    if (this.type == "Incident" && this.pos.y > centerpoint[1]) {
 
         stroke(this.intensity);
 
@@ -112,7 +123,7 @@ class Ray {
         line(x1,y1,x2,y2);
     }
 
-    if (showAngle == true && parentPosy < wny/2) {
+    if (showAngle == true && parentPosy < centerpoint[1]) {
         drawAngle(this);
         drawAngleArc(this);
         drawAngleSimetry(this.angle, this.type);
@@ -156,12 +167,12 @@ function drawMesures() {
   // text("Indice de refraction: "+n2,10,580);
   noFill();
   stroke(255,100);
-  ellipse(wnx/2,wny/2,circleSize,circleSize);
+  ellipse(centerpoint[0],centerpoint[1],circleSize,circleSize);
   for (let i = 0; i < 72; i++) {
       let offset = 135+90;
       let n = 5;
-    let x = (cos(i*n+offset)-sin(i*n+offset))*210+(wnx/2);
-    let y = (sin(i*n+offset)+cos(i*n+offset))*210+(wny/2);
+    let x = (cos(i*n+offset)-sin(i*n+offset))*210+centerpoint[0];
+    let y = (sin(i*n+offset)+cos(i*n+offset))*210+centerpoint[1];
     push();
     translate(x,y);
     rotate(i*n);
@@ -172,8 +183,8 @@ function drawMesures() {
   for (let i = 0; i < 360; i++) {
       let offset = 135+90;
       let n = 1;
-    let x = (cos(i*n+offset)-sin(i*n+offset))*210+(wnx/2);
-    let y = (sin(i*n+offset)+cos(i*n+offset))*210+(wny/2);
+    let x = (cos(i*n+offset)-sin(i*n+offset))*210+centerpoint[0];
+    let y = (sin(i*n+offset)+cos(i*n+offset))*210+centerpoint[1];
     push();
     translate(x,y);
     rotate(i*n);
@@ -185,10 +196,10 @@ function drawMesures() {
     push();
     let offset = 135+90;
     let n = 10;
-    let x = (cos(i*n+offset)-sin(i*n+offset))*210+(wnx/2);
-    let y = (sin(i*n+offset)+cos(i*n+offset))*210+(wny/2);
-    let xl = (cos(i*n+offset)-sin(i*n+offset))*218+(wnx/2);
-    let yl = (sin(i*n+offset)+cos(i*n+offset))*218+(wny/2)+3;
+    let x = (cos(i*n+offset)-sin(i*n+offset))*210+centerpoint[0];
+    let y = (sin(i*n+offset)+cos(i*n+offset))*210+centerpoint[1];
+    let xl = (cos(i*n+offset)-sin(i*n+offset))*218+centerpoint[0];
+    let yl = (sin(i*n+offset)+cos(i*n+offset))*218+centerpoint[1]+3;
 
     textSize(10);
     textAlign(CENTER)
@@ -209,7 +220,7 @@ function drawMesures() {
   }
 
   fill(255,100)
-  ellipse(wnx/2,wny/2,2,2);
+  ellipse(centerpoint[0],centerpoint[1],2,2);
 }
 function formatDeg(x) {
   if (x >= 0 && x < 90) {
@@ -230,11 +241,11 @@ function calcIntensity_r(x) {
 }
 function mouseDragged(){
 
-    if (mouseX >= 0 && mouseX <= wnx && mouseY <= wny && mouseY >= 0) {
-        if (!(mouseX < 75 && mouseX > 0 && mouseY < 460 && mouseY > 350)) {
-            if (!(mouseX < 120 && mouseX > 0 && mouseY < 60 && mouseY > 0)) {
-                r1.pos.x = mouseX;
-                r1.pos.y = mouseY;
+    if (mouseX/scale_ >= 0 && mouseX/scale_ <= wnx && mouseY/scale_ <= wny && mouseY/scale_ >= 0) {
+        if (!(mouseX/scale_ < 75 && mouseX/scale_ > 0 && mouseY/scale_ < 460 && mouseY/scale_ > 350)) {
+            if (!(mouseX/scale_ < 120 && mouseX/scale_ > 0 && mouseY/scale_ < 60 && mouseY/scale_ > 0)) {
+                r1.pos.x = mouseX*scale_;
+                r1.pos.y = mouseY*scale_;
             }
 
 
@@ -280,7 +291,7 @@ function dottedVLine(y1,y2) {
     push()
     for (let i = y1; i < y2; i+=16) {
         stroke(255,100);
-        line(wnx/2,i,wnx/2,i+4);
+        line(centerpoint[0],i,centerpoint[0],i+4);
     }
     pop()
 }
@@ -300,8 +311,8 @@ function drawAngleSimetry(angle, type){
     }
     if (bool == true) {
         let anghalf = ang/2;
-        let lx = ((cos(anghalf+180+45) - sin(anghalf+180+45))*26)+(wnx/2);
-        let ly = ((sin(anghalf+180+45) + cos(anghalf+180+45))*26)+(wny/2);
+        let lx = ((cos(anghalf+180+45) - sin(anghalf+180+45))*26)+centerpoint[0];
+        let ly = ((sin(anghalf+180+45) + cos(anghalf+180+45))*26)+centerpoint[1];
 
         push();
         translate(lx,ly);
@@ -335,7 +346,7 @@ function drawAngleArc(ray) {
             buffer = 0;
             angleAdd = -90;
             refAngle = -90;
-            pos = [wnx/2,wny/2];
+            pos = [centerpoint[0],centerpoint[1]]
         }
 
         if (ray.angle < buffer) {
@@ -362,20 +373,20 @@ function drawAngle(ray) {
             ang = -ray.angle;
             let anghalf = ang/2;
 
-            ax = ((cos(-anghalf+45) - sin(-anghalf+45))*45)+(wnx/2);
-            ay = ((sin(-anghalf+45) + cos(-anghalf+45))*45)+(wny/2);
+            ax = ((cos(-anghalf+45) - sin(-anghalf+45))*45)+centerpoint[0];
+            ay = ((sin(-anghalf+45) + cos(-anghalf+45))*45)+centerpoint[1];
         } else if (ray.type == "Mirrored") {
             ang = ray.angle-180;
             let anghalf = ang/2;
 
-            ax = ((cos(anghalf+180+45) - sin(anghalf+180+45))*45)+(wnx/2);
-            ay = ((sin(anghalf+180+45) + cos(anghalf+180+45))*45)+(wny/2);
+            ax = ((cos(anghalf+180+45) - sin(anghalf+180+45))*45)+centerpoint[0];
+            ay = ((sin(anghalf+180+45) + cos(anghalf+180+45))*45)+centerpoint[1];
         } else if (ray.type == "Incident") {
             ang = ray.angle;
             let anghalf = ang/2;
 
-            ax = ((cos(anghalf+180+45) - sin(anghalf+180+45))*45)+(wnx/2);
-            ay = ((sin(anghalf+180+45) + cos(anghalf+180+45))*45)+(wny/2);
+            ax = ((cos(anghalf+180+45) - sin(anghalf+180+45))*45)+centerpoint[0];
+            ay = ((sin(anghalf+180+45) + cos(anghalf+180+45))*45)+centerpoint[1];
         }
 
 
