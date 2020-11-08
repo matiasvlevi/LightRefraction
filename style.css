@@ -24,9 +24,20 @@ body {
 }
 #csvd {
     position: absolute;
+    text-align: center;
     left: 15px;
     top: 15px;
-    width:120px;
+    width:100px;
+    height:20px;
+    background-color: #444;
+    color: #fff;
+}
+#angd {
+    position: absolute;
+    text-align: center;
+    left: 15px;
+    top: 35px;
+    width:100px;
     height:20px;
     background-color: #444;
     color: #fff;
