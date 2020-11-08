@@ -2,8 +2,9 @@ body {
   background-color: #232323;
   position: relative;
   overflow-x: hidden;
+  overflow-y: hidden;
   height: 100%;
-  
+
 }
 
 #in1 {
