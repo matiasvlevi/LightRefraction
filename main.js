@@ -78,7 +78,7 @@ class Ray {
     } else {
         this.refractedRay = undefined;
     }
-    if (this.pos.y < wnx/2) {
+    if (this.pos.y < wny/2) {
 
         if (this.refractedRay !== undefined ) {
             this.refractedRay.render();
@@ -254,11 +254,12 @@ function calcIntensity_r(x) {
 function mouseDragged(){
 
     if (mouseX >= 0 && mouseX <= wnx && mouseY <= wny && mouseY >= 0) {
-        if (!(mouseX < 65 && mouseX > 0 && mouseY < 460 && mouseY > 350)) {
+        if (!(mouseX < 75 && mouseX > 0 && mouseY < 460 && mouseY > 350)) {
             r1.pos.x = mouseX;
             r1.pos.y = mouseY;
+            console.log(mouseX,mouseY)
         }
-        //console.log(mouseX,mouseY)
+
     }
 
 }
@@ -273,8 +274,15 @@ function printData(increment) {
     return arr;
 }
 function download_csv() {
-    let inter = JSON.parse(prompt("Increment"));
+    let str = prompt("Increment");
+    let inter = 0;
+    if (str == "") {
+        inter = 5;
+    } else {
+        inter = JSON.parse(str);
+    }
     data = printData(inter);
+
     let csv = 'thetaI,thetaR\n';
     data.forEach(function(row) {
             csv += row.join(',');

@@ -1,11 +1,12 @@
 body {
   background-color: #232323;
+  margin: 0px;
 }
 
 #in1 {
     position: absolute;
-    left: 15px;
-    top: 390px;
+    left: 12px;
+    top: 360px;
     width:54px;
     height:20px;
     background-color: #444;
@@ -13,11 +14,20 @@ body {
 }
 #in2 {
     position: absolute;
-    left: 15px;
-    top: 445px;
+    left: 12px;
+    top: 420px;
     width:54px;
     height:20px;
     background-color: #444;
     color: #fff;
 
+}
+#csvd {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    width:120px;
+    height:20px;
+    background-color: #444;
+    color: #fff;
 }
