@@ -259,7 +259,7 @@ function printData(increment) {
     for (let i =-90; i < 91; i+=increment) {
         //console.log("Incident: "+i+" Refracted: "+findThetaR(n1,n2,i))\
         let r = round(abs(findThetaR(n1,n2,i))*1000)/1000;
-        //console.log("("+i+","+r+")")
+        console.log("("+i+","+r+")")
         arr.push([i,r]);
     }
     return arr;
@@ -316,7 +316,7 @@ function drawAngleSimetry(angle, type){
 
         push();
         translate(lx,ly);
-        rotate(anghalf)
+        rotate(anghalf);
         stroke(255)
         line(0,0,0,10)
         pop();
